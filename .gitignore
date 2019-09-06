@@ -2,4 +2,5 @@ __pycache__
 *.iml
 .idea
 */java/*/out/
+coursework/oop1*/out/
 .attach_pid*
