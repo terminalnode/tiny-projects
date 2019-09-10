@@ -30,33 +30,33 @@ public class Game {
                 System.out.println("Your game would have a total of " + totalPlayers + ".\n" +
                         "That's not enough, you need at least " + minimumPlayers + " player(s).\n");
             }
+        }
 
-            // Check how many dice each player should start with.
-            int[] diceSelection = null;
-            System.out.println("\nPick you starting dice set by typing a string of numbers.\n" +
-                    "For example, typing \"6 6 6\" will start the game with three six-sided dice.\n" +
-                    "Leave empty for default selection.");
-            while (diceSelection == null) {
-                System.out.print("Selection: ");
-                diceSelection = getDiceSelection(scanner.nextLine().strip());
-            }
+        // Check how many dice each player should start with.
+        int[] diceSelection = null;
+        System.out.println("\nPick you starting dice set by typing a string of numbers.\n" +
+                "For example, typing \"6 6 6\" will start the game with three six-sided dice.\n" +
+                "Leave empty for default selection.");
+        while (diceSelection == null) {
+            System.out.print("Selection: ");
+            diceSelection = getDiceSelection(scanner.nextLine().strip());
+        }
 
-            // Create the players
-            if (humanPlayers > 0) System.out.println("\nCreating " + humanPlayers + " human players.");
-            for (int i = 0; i < humanPlayers; i++) {
-                players.add(new Player(scanner));
-            }
+        // Create the players
+        if (humanPlayers > 0) System.out.println("\nCreating " + humanPlayers + " human players.");
+        for (int i = 0; i < humanPlayers; i++) {
+            players.add(new Player(scanner));
+        }
 
-            if (cpuPlayers > 0) System.out.println("\nCreating " + cpuPlayers + " CPU players.");
-            for (int i = 0; i < cpuPlayers; i++) {
-                players.add(new Player(i + 1));
-            }
+        if (cpuPlayers > 0) System.out.println("\nCreating " + cpuPlayers + " CPU players.");
+        for (int i = 0; i < cpuPlayers; i++) {
+            players.add(new Player(i + 1));
+        }
 
-            // Give all the players some dice
-            for (Player player : players) {
-                for (int numSides : diceSelection) {
-                    player.addDie(new Die(numSides, random));
-                }
+        // Give all the players some dice
+        for (Player player : players) {
+            for (int numSides : diceSelection) {
+                player.addDie(new Die(numSides, random));
             }
         }
         System.out.println(); // Empty line to separate the initialization from the rest.
