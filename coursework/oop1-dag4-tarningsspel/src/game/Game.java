@@ -86,9 +86,11 @@ public class Game {
             // Wanna play again?
             if (gameOver) {
                 System.out.println("Would you like to restart the game? [y/n]");
-                System.out.print("> ");
-                command = scanner.nextLine().strip().toLowerCase().substring(0,1);
-                if ("y".equals(command)) {
+                do {
+                    System.out.print("> ");
+                    command = scanner.nextLine().strip().toLowerCase();
+                } while(command.length() < 1);
+                if ('y' == command.charAt(0)) {
                     players = new ArrayList<>();
                     System.out.println("\n");
                     initializePlayers();
