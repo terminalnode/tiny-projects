@@ -1,0 +1,41 @@
+plugins {
+    id 'java'
+}
+
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+allprojects {
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile) {
+            options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+        }
+    }
+}
+
+// This isn't working as intended at the moment, only the server jar
+// will be created. If server is commented out client will be created.
+jar {
+    baseName = "java-chat-client"
+    version = "1.0"
+    manifest {
+        attributes 'Main-Class': 'Client'
+    }
+}
+
+jar {
+    baseName = "java-chat-server"
+    version = "1.0"
+    manifest {
+        attributes 'Main-Class': 'Server'
+    }
+}

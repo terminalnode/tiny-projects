@@ -1,6 +1,19 @@
+# Various
+coursework/oop1*/out/
+
+# Python
 __pycache__
+
+# Intellij
 *.iml
 .idea
 */java/*/out/
-coursework/oop1*/out/
 .attach_pid*
+
+# Java/Gradle-stuff
+*.jar
+*/build
+gradlew*
+.gradle
+*/gradle/wrapper/gradle-wrapper.properties
+
