@@ -7,12 +7,13 @@ __pycache__
 # Intellij
 *.iml
 .idea
-*/java/*/out/
+out/
 .attach_pid*
 
 # Java/Gradle-stuff
 *.jar
-*/build
+build/*
+*/build/*
 gradlew*
 .gradle
 */gradle/wrapper/gradle-wrapper.properties
