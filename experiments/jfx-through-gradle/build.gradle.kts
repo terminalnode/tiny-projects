@@ -8,6 +8,10 @@ plugins {
 group = "xyz.kazuthecat.dogedice"
 version = "1.0-SNAPSHOT"
 
+application {
+  mainClassName = "xyz.kazuthecat.Launcher"
+}
+
 repositories {
   mavenCentral()
 }
