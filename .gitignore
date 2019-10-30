@@ -1,5 +1,5 @@
-# Various
-coursework/oop1*/out/
+# Ending used for temporary local backups
+*_bup
 
 # Python
 __pycache__
@@ -7,14 +7,12 @@ __pycache__
 # Intellij
 *.iml
 .idea
-out/
+out
 .attach_pid*
 
 # Java/Gradle-stuff
 *.jar
-build/*
-*/build/*
-gradlew*
+build
 .gradle
 */gradle/wrapper/gradle-wrapper.properties
 
