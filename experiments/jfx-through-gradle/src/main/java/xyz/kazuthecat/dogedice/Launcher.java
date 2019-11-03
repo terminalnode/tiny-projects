@@ -1,4 +1,4 @@
-package xyz.kazuthecat;
+package xyz.kazuthecat.dogedice;
 
 /* As far as I understand it has something to do with jfx only being available
  * as a jar, and any class the Main class extends needs to be available as a module.

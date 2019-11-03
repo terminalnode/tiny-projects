@@ -1,4 +1,4 @@
-package xyz.kazuthecat;
+package xyz.kazuthecat.dogedice;
 
 import javafx.application.*;
 import javafx.scene.*;
