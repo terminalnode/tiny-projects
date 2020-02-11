@@ -7,8 +7,9 @@ function Square(props) {
     <button
       className="square"
       onClick={ props.onClick }
+      style={{ color: (props.highlight) ? "#00aaaa" : "#000000" }}
     >
-      {props.value}
+      { props.value }
     </button>
   );
 }
@@ -17,6 +18,7 @@ class Board extends React.Component {
   renderSquare(i) {
     return <Square
       value={ this.props.squares[i] }
+      highlight={ false }
       onClick={ () => this.props.onClick(i) }
     />;
   }
@@ -29,11 +31,13 @@ class Board extends React.Component {
           {this.renderSquare(1)}
           {this.renderSquare(2)}
         </div>
+
         <div className="board-row">
           {this.renderSquare(3)}
           {this.renderSquare(4)}
           {this.renderSquare(5)}
         </div>
+
         <div className="board-row">
           {this.renderSquare(6)}
           {this.renderSquare(7)}
@@ -53,6 +57,7 @@ class Game extends React.Component {
       }],
       xIsNext: true,
       stepNumber: 0,
+      descendingOrder: false,
     };
   }
 
@@ -69,6 +74,7 @@ class Game extends React.Component {
     this.setState({
       history: history.concat([{
         squares: squares,
+        stepNumber: this.state.stepNumber + 1,
       }]),
       stepNumber: history.length,
       xIsNext: !this.state.xIsNext,
@@ -89,25 +95,37 @@ class Game extends React.Component {
 
     const moves = history.map((state, move) => {
       const desc = move ?
-        'Go to move #' + move :
+        'Go to move #' + state.stepNumber :
         'Go to game start';
       return (
-        <li key={move}>
+        <li key={state.stepNumber}>
           <button
-            onClick={ () => this.jumpTo(move) }
+            onClick={ () => this.jumpTo(state.stepNumber) }
             style={{ fontWeight: (state === current) ? "bold" : "normal" }}
           >
             {desc}
           </button>
         </li>
       );
-    });
+    })
+
+    if (this.state.descendingOrder) {
+      moves.reverse();
+    }
+    ;
 
     let status;
     if (winner) {
       status = 'Winner: ' + winner;
     } else {
       status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O')
+    }
+
+    let order;
+    if (this.state.descendingOrder) {
+      order = "Descending order"
+    } else {
+      order = "Ascending order"
     }
 
     return (
@@ -120,6 +138,11 @@ class Game extends React.Component {
         </div>
         <div className="game-info">
           <div>{ status }</div>
+          <button
+            onClick={ () => this.setState({descendingOrder: !this.state.descendingOrder}) }
+          >
+            {order}
+          </button>
           <ol>{ moves }</ol>
         </div>
       </div>
