@@ -2,7 +2,7 @@
 Commands in SQL have the form `SELECT some value(s) FROM some table(s) WHERE some condition(s)` (though there are other actions than select). Keywords are not case sensitive and we could write something like `sElEcT value(s) fRoM db(s) wHeRe cond(s)` if we really wanted to, often capital letters are used for keywords to make it easier to read. Sometimes lowercase is used to make it easier to type.
 
 All white space is ignored (though necessary to separate parts of the statement), and statements end with a semicolon. Thus the first statement above could be written as:
-```
+```sql
 SELECT
     some value(s)
 FROM
@@ -28,6 +28,22 @@ String literals are put inside single-quotes, e.g. `'one', 'two', 'three'`.
 For numeric literals integers, decimals and scientific notations are supported, e.g. `10, -10, 10.0, 1E1`.
 
 For binary, `x'0000'` where the zeroes are hexadecimal digits are used, e.g. `x'1010', x'f0f0'`.
+
+# Aliases
+We can use aliases in our query to give tables and columns different names. When looking through the db manually this can be used to give columns more human-readable titles and other pointless fluff. However it can also be used for things like defining temporary columns. For example we could do something like this to essentially get a column with employees full name from a database that only stores first and last name separately:
+```sql
+SELECT
+    employee_id,
+    concat(first_name, ' ', last_name) fullname
+FROM
+    employees e
+```
+Or if we want the full names and id numbers for the first 10 actors in the Sakila database:
+`SELECT actor_id 'ID', concat(first_name, ' ', last_name) 'Full Name' FROM actor ORDER BY last_name ASC LIMIT 10;`
+
+Optionally when using aliases we may use the keyword `AS`, such as in `actor_id AS 'ID'`.
+
+These aliases are often used to simplify queries so we don't have to do as much typing. For example if we need to reference `departments` several times in a query it's easy to just give it the alias `d` (`departments d` or `departments AS d`).
 
 # Statements
 Bunch of statements (commands) with example uses.
@@ -91,44 +107,8 @@ OFFSET 1 ROW          -- (or OFFSET 1 ROWS ONLY)
 FETCH NEXT 1 ROW ONLY -- (or FETCH FIRST 1 ROWS ONLY)
 ```
 
-## WHERE, comparison operators and logical operators
+## WHERE
 Filters rows based on certain conditions. There really isn't much to say about this except that it looks like this:
 `SELECT first_name, last_name FROM employees WHERE salary > 20e3;`
 
-Here are the conditional operators we can use with it:
-```
-=   Equal to
-<>  Not equal to
-!=  Also not equal to
-<   Less than
->   More than
-<=  Less than or equal to
->=  More than or equal to
-```
-Note that SQL understands dates, so we can do stuff like `SELECT * FROM employees WHERE hire_date > '1997-01-01'`. Pretty cool. And a little strange.
-
-Here are the logical operators we can use with it:
-```
-EXISTS(subquery)    True if subquery contains any rows.
-a > ALL(subquery)   True if a is greater than all of the values returned by subquery.
-a > ANY(subquery)   True if a is greater than any of the values returned by subquery.
-a > SOME(subquery)  Alias of ANY.
-a AND b             True if a and b evaluate to true.
-a BETWEEN b AND c   True if a is between b and c in value.
-a IN (b,c,d)        True if a is equal to an element of a list (b, c or d).
-a LIKE 'pattern'    True if a matches pattern (see below).
-NOT a               Reverse result of a boolean value a.
-a OR b              True if a is true or b is true.
-a IS NULL           True if a is NULL (note that a = NULL is always false!)
-a IS NOT NULL       True if a is not NULL (duh).
-```
-The pattern for `LIKE` is kind of like regex except we use `_` for any single character (instead of `.`) and `%` for zero or more characters (sort of like `*`)... and we seem to have nothing else. It only matches full strings, so in regex terms `^` and `$` is applied to the ends of the pattern.
-
-The truth tables are about what you'd expect but may behave strangely with NULL. Here are truth tables for NULL OPERATOR TOP\_ROW:
-```
-    TRUE    FALSE   NULL
-AND NULL    FALSE   NULL
-OR  TRUE    NULL    NULL
-```
-
-Some databases may use short-circuit evaluation, MariaDB is not one of them. In such databases `WHERE 1 = 1 AND 1 / 0` would evaluate to true, while in MariaDB it evaluates as false with warnings.
+Really not much else to say about it.
