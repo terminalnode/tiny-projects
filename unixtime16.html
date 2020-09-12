@@ -1,0 +1,74 @@
+<html>
+  <head>
+    <title>Unix Time Countdown!</title>
+    <style>
+      body {
+        background-color: #111;
+        color: #4a4;
+        margin: auto;
+        text-align: center;
+        padding: 70px 0;
+      }
+
+      h1, h2 {
+        color: #4d4;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Countdown to Unix Time 1600000000</h1>
+    <main>
+      <div id="exact-time"></div>
+      <div id="time-until"></div>
+    </main>
+
+    <script>
+      const monthNames = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+      ]
+
+      const dateFormat = function(date) {
+        const year = date.getFullYear();
+        const month = monthNames[date.getMonth()];
+        const day = date.getDate();
+        const hour = date.getHours();
+        const minute = date.getMinutes();
+        const second = date.getSeconds();
+        return `${day} ${month}, ${year} at ${hour}:${minute}:${second}`;
+      };
+
+      const secondsToDuration = function(seconds) {
+        let hours = Math.floor(seconds / 3600);
+        seconds %= 3600;
+        let minutes = Math.floor(seconds / 60);
+        seconds %= 60;
+        return `${hours} hours ${minutes} minutes ${seconds} seconds`;
+      };
+
+      const exactTimeDiv = document.querySelector("#exact-time");
+      const timeUntilDiv = document.querySelector("#time-until");
+
+      window.setInterval(() => {
+        const timeNow = Date.now();
+        const eventTime = new Date(1600000000 * 1000);
+        const secondsLeft = Math.floor((eventTime - timeNow) / 1000);
+
+        const remainingTimeString = secondsLeft > 0 ?
+          `<h2>Time left:</h2>${secondsToDuration(secondsLeft)}` :
+          `Hooray! Unix time is now ${Math.floor(timeNow / 1000)}`;
+
+        exactTimeDiv.innerHTML = `
+          <p>
+            On ${dateFormat(eventTime)} (in your local time zone) unix time turns 1600000000!
+          </p>`;
+
+        timeUntilDiv.innerHTML = `
+          <p>
+            ${remainingTimeString}
+          </p>
+        `;
+      }, 250)
+    </script>
+  </body>
+</html>
