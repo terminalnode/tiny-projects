@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>Unix Time Countdown!</title>
+    <title>Unix Time Countdown</title>
     <style>
       body {
         background-color: #111;
@@ -10,7 +10,7 @@
         padding: 70px 0;
       }
 
-      h1, h2 {
+      h1, h2, strong {
         color: #4d4;
       }
     </style>
@@ -21,9 +21,14 @@
     <main>
       <div id="exact-time"></div>
       <div id="time-until"></div>
+      <div id="time-until-next"></div>
     </main>
 
     <script>
+      const secondsInYear = 31557600;
+      const secondsInDay = 86400;
+      const secondsInHour = 3600;
+      const secondsInMinute = 60;
       const monthNames = [
         "January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December"
@@ -40,20 +45,45 @@
       };
 
       const secondsToDuration = function(seconds) {
-        let hours = Math.floor(seconds / 3600);
-        seconds %= 3600;
-        let minutes = Math.floor(seconds / 60);
-        seconds %= 60;
-        return `${hours} hours ${minutes} minutes ${seconds} seconds`;
+        timeStrings = [];
+
+        if (seconds > secondsInYear) {
+          let years = Math.floor(seconds / secondsInYear);
+          timeStrings.push(`${years} years`);
+          seconds %= secondsInYear;
+        }
+
+        if (seconds > secondsInDay) {
+          let days = Math.floor(seconds / secondsInDay);
+          timeStrings.push(`${days} days`);
+          seconds %= secondsInDay;
+        }
+
+        if (seconds > secondsInHour) {
+          let hours = Math.floor(seconds / secondsInHour);
+          timeStrings.push(`${hours} hours`);
+          seconds %= secondsInHour;
+        }
+
+        if (seconds > secondsInMinute) {
+          let minutes = Math.floor(seconds / secondsInMinute);
+          timeStrings.push(`${minutes} minutes`);
+          seconds %= secondsInMinute;
+        }
+
+        return timeStrings.join(", ") + ` and ${seconds} seconds`;
       };
 
       const exactTimeDiv = document.querySelector("#exact-time");
       const timeUntilDiv = document.querySelector("#time-until");
+      const timeUntilNextDiv = document.querySelector("#time-until-next");
 
       window.setInterval(() => {
         const timeNow = Date.now();
         const eventTime = new Date(1600000000 * 1000);
+        const nextEventTime = new Date(1700000000 * 1000);
         const secondsLeft = Math.floor((eventTime - timeNow) / 1000);
+        const nextSecondsLeft = Math.floor((nextEventTime - timeNow) / 1000);
 
         const remainingTimeString = secondsLeft > 0 ?
           `<h2>Time left:</h2>${secondsToDuration(secondsLeft)}` :
@@ -67,9 +97,10 @@
         timeUntilDiv.innerHTML = `
           <p>
             ${remainingTimeString}
-          </p>
-        `;
-      }, 250)
+          </p>`;
+
+        timeUntilDiv.title = `1 700 000 000 is in: ${secondsToDuration(nextSecondsLeft)}!`;
+      }, 500)
     </script>
   </body>
 </html>
