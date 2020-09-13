@@ -71,7 +71,7 @@
           seconds %= secondsInMinute;
         }
 
-        return timeStrings.join(", ") + ` and ${seconds} seconds`;
+        return timeStrings.join(", ") + ` ${timeStrings.length > 0 ? "and" : ""} ${seconds} seconds`;
       };
 
       const exactTimeDiv = document.querySelector("#exact-time");
