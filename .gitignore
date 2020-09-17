@@ -10,6 +10,9 @@ __pycache__
 out
 .attach_pid*
 
+# Scala
+.metals
+
 # Java/Gradle-stuff
 *.jar
 build
